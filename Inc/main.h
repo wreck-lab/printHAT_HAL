@@ -112,10 +112,14 @@ void Error_Handler(void);
 #define GP1_GPIO_Port GPIOC
 #define GP3_Pin GPIO_PIN_8
 #define GP3_GPIO_Port GPIOA
-#define RPI_TX_Pin GPIO_PIN_9
-#define RPI_TX_GPIO_Port GPIOA
-#define RPI_RX_Pin GPIO_PIN_10
+#define RPI_RX_Pin GPIO_PIN_9
 #define RPI_RX_GPIO_Port GPIOA
+#define RPI_TX_Pin GPIO_PIN_10
+#define RPI_TX_GPIO_Port GPIOA
+#define USBDM_Pin GPIO_PIN_11
+#define USBDM_GPIO_Port GPIOA
+#define USBDP_Pin GPIO_PIN_12
+#define USBDP_GPIO_Port GPIOA
 #define Y_EN_Pin GPIO_PIN_13
 #define Y_EN_GPIO_Port GPIOA
 #define Y_STEP_Pin GPIO_PIN_14

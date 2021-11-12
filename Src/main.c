@@ -22,7 +22,7 @@
 #include "adc.h"
 #include "tim.h"
 #include "usart.h"
-#include "usb_otg.h"
+#include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -96,12 +96,13 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   MX_USART6_UART_Init();
-  MX_USB_OTG_FS_PCD_Init();
   MX_TIM1_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
   HAL_TIM_Base_Start_IT(&htim1);
-
+  //HAL_GPIO_TogglePin(H0_GPIO_Port,H0_Pin);
+  
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -111,7 +112,13 @@ int main(void)
     // control loop
 		if (tim1_int) {
 			tim1_int = 0;
+      
+      //HAL_GPIO_TogglePin(F0_GPIO_Port,F0_Pin);
+      //HAL_GPIO_TogglePin(F1_GPIO_Port,F1_Pin);
+
 			HAL_GPIO_TogglePin(H0_GPIO_Port,H0_Pin);
+      HAL_GPIO_TogglePin(H1_GPIO_Port,H1_Pin);
+      HAL_GPIO_TogglePin(H2_GPIO_Port,H2_Pin);
 		}
 
     /* USER CODE END WHILE */
