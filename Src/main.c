@@ -29,6 +29,8 @@
 /* USER CODE BEGIN Includes */
 #include <stdbool.h>
 
+#include "phat2_motor.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,6 +103,9 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   HAL_TIM_Base_Start_IT(&htim1);
+
+  tmc2209_init();
+
   //HAL_GPIO_TogglePin(H0_GPIO_Port,H0_Pin);
   
   /* USER CODE END 2 */
