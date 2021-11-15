@@ -235,5 +235,33 @@ void OTG_FS_IRQHandler(void)
 
 /* USER CODE BEGIN 1 */
 
+// https://stackoverflow.com/questions/43298708/stm32-implementing-uart-in-dma-mode
+void HAL_UART_TxHalfCpltCallback(UART_HandleTypeDef *huart) {
+}
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef * huart) {
+  
+  //if(huart->Instance == USART2 || huart->Instance == USART6)
+  //  OneWire_TxCpltCallback();
+
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+
+  //if(huart->Instance == USART2 || huart->Instance == USART6)
+  //  OneWire_RxCpltCallback();
+
+  // take care of the first rogue byte
+  /*if(rx_init==false) {
+      rx_init = true;
+      HAL_UART_Receive_IT(&huart4, uart_buf, 1);
+      return;
+  }*/
+  //HAL_UART_RxCpltCallback_Inner(huart);
+
+  //uart_int=1;
+}
+
+
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

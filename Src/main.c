@@ -104,7 +104,8 @@ int main(void)
 
   HAL_TIM_Base_Start_IT(&htim1);
 
-  tmc2209_init();
+  phat2_motors_init();
+
 
   //HAL_GPIO_TogglePin(H0_GPIO_Port,H0_Pin);
   
@@ -113,7 +114,17 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1) {
+
     
+    int32_t gstat_uart = TMC2209_FIELD_READ(&TMC2209_S1, TMC2209_GCONF, TMC2209_PDN_DISABLE_MASK, TMC2209_PDN_DISABLE_SHIFT);
+    int32_t version = TMC2209_FIELD_READ(&TMC2209_S1, TMC2209_IOIN, TMC2209_VERSION_MASK, TMC2209_VERSION_SHIFT);
+    
+    //int32_t ioin_dir = TMC2209_FIELD_READ(&TMC2209_S1, TMC2209_IOIN, TMC2209_DIR_MASK, TMC2209_DIR_SHIFT);
+    
+    char MSG[35] = {'\0'};
+    sprintf(MSG, "ver: %X, gstat_uart: %d \r\n", version, gstat_uart);
+    CDC_Transmit_FS(MSG, sizeof(MSG));
+
     // control loop
 		if (tim1_int) {
 			tim1_int = 0;
@@ -126,6 +137,9 @@ int main(void)
       HAL_GPIO_TogglePin(H2_GPIO_Port,H2_Pin);
 		}
 
+    HAL_GPIO_TogglePin(X_DIR_GPIO_Port, X_DIR_Pin);
+
+    HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
