@@ -22,8 +22,8 @@ static volatile uint8_t
 	txBuffer[BUFFER_SIZE];
 
 typedef struct {
-	uint16_t 		pin;
 	GPIO_TypeDef    *port;
+	uint16_t 		pin;
 } IOPinTypeDef;
 
 // inspired by TMC-Eval
@@ -48,6 +48,6 @@ static TMC2209TypeDef   TMC2209_S1,
                         TMC2209_S5;
 
 void phat2_motors_init();
-
+void phat2_motors_enable(bool enn);
 
 #endif

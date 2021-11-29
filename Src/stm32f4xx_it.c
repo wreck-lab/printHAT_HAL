@@ -61,6 +61,8 @@
 /* External variables --------------------------------------------------------*/
 extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
 extern TIM_HandleTypeDef htim1;
+extern DMA_HandleTypeDef hdma_usart2_rx;
+extern DMA_HandleTypeDef hdma_usart2_tx;
 /* USER CODE BEGIN EV */
 
 extern bool tim1_int;
@@ -206,6 +208,34 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles DMA1 stream5 global interrupt.
+  */
+void DMA1_Stream5_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA1_Stream5_IRQn 0 */
+
+  /* USER CODE END DMA1_Stream5_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_usart2_rx);
+  /* USER CODE BEGIN DMA1_Stream5_IRQn 1 */
+
+  /* USER CODE END DMA1_Stream5_IRQn 1 */
+}
+
+/**
+  * @brief This function handles DMA1 stream6 global interrupt.
+  */
+void DMA1_Stream6_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA1_Stream6_IRQn 0 */
+
+  /* USER CODE END DMA1_Stream6_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_usart2_tx);
+  /* USER CODE BEGIN DMA1_Stream6_IRQn 1 */
+
+  /* USER CODE END DMA1_Stream6_IRQn 1 */
+}
+
+/**
   * @brief This function handles TIM1 update interrupt and TIM10 global interrupt.
   */
 void TIM1_UP_TIM10_IRQHandler(void)
@@ -242,6 +272,7 @@ void HAL_UART_TxHalfCpltCallback(UART_HandleTypeDef *huart) {
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef * huart) {
   
   //if(huart->Instance == USART2 || huart->Instance == USART6)
+  //  CDC_Transmit_FS("TX", sizeof("TX"));
   //  OneWire_TxCpltCallback();
 
 }
@@ -249,17 +280,9 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef * huart) {
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 
   //if(huart->Instance == USART2 || huart->Instance == USART6)
+  //  CDC_Transmit_FS("RX", sizeof("RX"));
   //  OneWire_RxCpltCallback();
 
-  // take care of the first rogue byte
-  /*if(rx_init==false) {
-      rx_init = true;
-      HAL_UART_Receive_IT(&huart4, uart_buf, 1);
-      return;
-  }*/
-  //HAL_UART_RxCpltCallback_Inner(huart);
-
-  //uart_int=1;
 }
 
 

@@ -20,6 +20,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "dma.h"
 #include "tim.h"
 #include "usart.h"
 #include "usb_device.h"
@@ -94,6 +95,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_ADC1_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
@@ -105,7 +107,8 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim1);
 
   phat2_motors_init();
-
+  phat2_motors_enable(1);
+  
 
   //HAL_GPIO_TogglePin(H0_GPIO_Port,H0_Pin);
   
@@ -114,30 +117,41 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1) {
+    //int32_t enn = TMC2209_FIELD_READ(&TMC2209_S1, TMC2209_IOIN, TMC2209_ENN_MASK, TMC2209_ENN_SHIFT);
+    //int32_t ms1 = TMC2209_FIELD_READ(&TMC2209_S1, TMC2209_IOIN, TMC2209_MS1_MASK, TMC2209_MS1_SHIFT);
+    //int32_t ms2 = TMC2209_FIELD_READ(&TMC2209_S1, TMC2209_IOIN, TMC2209_MS2_MASK, TMC2209_MS2_SHIFT);
+    int32_t dir = TMC2209_FIELD_READ(&TMC2209_S1, TMC2209_IOIN, TMC2209_DIR_MASK, TMC2209_DIR_SHIFT);
 
+    //int32_t isca = TMC2209_FIELD_READ(&TMC2209_S1, TMC2209_GCONF, TMC2209_I_SCALE_ANALOG_MASK, TMC2209_I_SCALE_ANALOG_SHIFT);
+    //int32_t msf = TMC2209_FIELD_READ(&TMC2209_S1, TMC2209_GCONF, TMC2209_MULTISTEP_FILT_MASK, TMC2209_MULTISTEP_FILT_SHIFT);
+    //int32_t version = TMC2209_FIELD_READ(&TMC2209_S1, TMC2209_IOIN, TMC2209_VERSION_MASK, TMC2209_VERSION_SHIFT);
     
-    int32_t gstat_uart = TMC2209_FIELD_READ(&TMC2209_S1, TMC2209_GCONF, TMC2209_PDN_DISABLE_MASK, TMC2209_PDN_DISABLE_SHIFT);
-    int32_t version = TMC2209_FIELD_READ(&TMC2209_S1, TMC2209_IOIN, TMC2209_VERSION_MASK, TMC2209_VERSION_SHIFT);
     
     //int32_t ioin_dir = TMC2209_FIELD_READ(&TMC2209_S1, TMC2209_IOIN, TMC2209_DIR_MASK, TMC2209_DIR_SHIFT);
     
-    char MSG[35] = {'\0'};
-    sprintf(MSG, "ver: %X, gstat_uart: %d \r\n", version, gstat_uart);
+    char MSG[100] = {'\0'};
+    //sprintf(MSG, "ver: %X, ISCA: %d, MSF: %d, ENN: %d, MS1: %d, MS2: %d, DIR: \r\n", version, isca, msf, enn, ms1, ms2, dir);
+    sprintf(MSG, "DIR: %d \r\n", dir);
+    
     CDC_Transmit_FS(MSG, sizeof(MSG));
 
     // control loop
-		if (tim1_int) {
-			tim1_int = 0;
+		//if (tim1_int) {
+		//	tim1_int = 0;
       
       //HAL_GPIO_TogglePin(F0_GPIO_Port,F0_Pin);
       //HAL_GPIO_TogglePin(F1_GPIO_Port,F1_Pin);
 
-			HAL_GPIO_TogglePin(H0_GPIO_Port,H0_Pin);
-      HAL_GPIO_TogglePin(H1_GPIO_Port,H1_Pin);
-      HAL_GPIO_TogglePin(H2_GPIO_Port,H2_Pin);
-		}
+			//HAL_GPIO_TogglePin(H0_GPIO_Port,H0_Pin);
+      //HAL_GPIO_TogglePin(H1_GPIO_Port,H1_Pin);
+      //HAL_GPIO_TogglePin(H2_GPIO_Port,H2_Pin);
+		//}
+
+    HAL_GPIO_TogglePin(H0_GPIO_Port,H0_Pin);
 
     HAL_GPIO_TogglePin(X_DIR_GPIO_Port, X_DIR_Pin);
+    HAL_GPIO_TogglePin(Y_DIR_GPIO_Port, Y_DIR_Pin);
+    HAL_GPIO_TogglePin(Z_DIR_GPIO_Port, Z_DIR_Pin);
 
     HAL_Delay(1000);
     /* USER CODE END WHILE */
