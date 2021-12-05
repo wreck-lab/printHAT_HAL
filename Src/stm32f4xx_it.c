@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 
 #include <stdbool.h>
+#include "phat2_io.h"
 
 /* USER CODE END Includes */
 
@@ -60,9 +61,10 @@
 
 /* External variables --------------------------------------------------------*/
 extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
+extern DMA_HandleTypeDef hdma_adc1;
 extern TIM_HandleTypeDef htim1;
-extern DMA_HandleTypeDef hdma_usart2_rx;
-extern DMA_HandleTypeDef hdma_usart2_tx;
+extern TIM_HandleTypeDef htim3;
+extern TIM_HandleTypeDef htim4;
 /* USER CODE BEGIN EV */
 
 extern bool tim1_int;
@@ -208,34 +210,6 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles DMA1 stream5 global interrupt.
-  */
-void DMA1_Stream5_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA1_Stream5_IRQn 0 */
-
-  /* USER CODE END DMA1_Stream5_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_usart2_rx);
-  /* USER CODE BEGIN DMA1_Stream5_IRQn 1 */
-
-  /* USER CODE END DMA1_Stream5_IRQn 1 */
-}
-
-/**
-  * @brief This function handles DMA1 stream6 global interrupt.
-  */
-void DMA1_Stream6_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA1_Stream6_IRQn 0 */
-
-  /* USER CODE END DMA1_Stream6_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_usart2_tx);
-  /* USER CODE BEGIN DMA1_Stream6_IRQn 1 */
-
-  /* USER CODE END DMA1_Stream6_IRQn 1 */
-}
-
-/**
   * @brief This function handles TIM1 update interrupt and TIM10 global interrupt.
   */
 void TIM1_UP_TIM10_IRQHandler(void)
@@ -247,6 +221,48 @@ void TIM1_UP_TIM10_IRQHandler(void)
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 1 */
   tim1_int = 1;
   /* USER CODE END TIM1_UP_TIM10_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM3 global interrupt.
+  */
+void TIM3_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM3_IRQn 0 */
+
+  /* USER CODE END TIM3_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim3);
+  /* USER CODE BEGIN TIM3_IRQn 1 */
+
+  /* USER CODE END TIM3_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM4 global interrupt.
+  */
+void TIM4_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM4_IRQn 0 */
+
+  /* USER CODE END TIM4_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim4);
+  /* USER CODE BEGIN TIM4_IRQn 1 */
+
+  /* USER CODE END TIM4_IRQn 1 */
+}
+
+/**
+  * @brief This function handles DMA2 stream0 global interrupt.
+  */
+void DMA2_Stream0_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA2_Stream0_IRQn 0 */
+
+  /* USER CODE END DMA2_Stream0_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_adc1);
+  /* USER CODE BEGIN DMA2_Stream0_IRQn 1 */
+
+  /* USER CODE END DMA2_Stream0_IRQn 1 */
 }
 
 /**
@@ -268,22 +284,27 @@ void OTG_FS_IRQHandler(void)
 // https://stackoverflow.com/questions/43298708/stm32-implementing-uart-in-dma-mode
 void HAL_UART_TxHalfCpltCallback(UART_HandleTypeDef *huart) {
 }
-
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef * huart) {
-  
   //if(huart->Instance == USART2 || huart->Instance == USART6)
   //  CDC_Transmit_FS("TX", sizeof("TX"));
   //  OneWire_TxCpltCallback();
-
 }
-
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-
   //if(huart->Instance == USART2 || huart->Instance == USART6)
   //  CDC_Transmit_FS("RX", sizeof("RX"));
   //  OneWire_RxCpltCallback();
-
 }
+
+// https://community.st.com/s/question/0D53W00000HNgKv/hal-why-is-the-pwm-pulse-callback-not-triggering
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+  phat2_tim_callback(htim);
+}
+void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim) {
+  phat2_pwm_callback(htim);
+}
+
+//void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc) {
+//}
 
 
 /* USER CODE END 1 */

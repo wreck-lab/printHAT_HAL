@@ -76,8 +76,8 @@ void Error_Handler(void);
 #define TH2_GPIO_Port GPIOA
 #define UART1_TX_Pin GPIO_PIN_2
 #define UART1_TX_GPIO_Port GPIOA
-#define UART1_RX_Pin GPIO_PIN_3
-#define UART1_RX_GPIO_Port GPIOA
+#define UART1_RX_PU_Pin GPIO_PIN_3
+#define UART1_RX_PU_GPIO_Port GPIOA
 #define GP4_Pin GPIO_PIN_4
 #define GP4_GPIO_Port GPIOA
 #define GP5_Pin GPIO_PIN_5
@@ -104,8 +104,8 @@ void Error_Handler(void);
 #define E1_DIR_GPIO_Port GPIOB
 #define UART2_TX_Pin GPIO_PIN_6
 #define UART2_TX_GPIO_Port GPIOC
-#define UART2_RX_Pin GPIO_PIN_7
-#define UART2_RX_GPIO_Port GPIOC
+#define UART2_RX_PU_Pin GPIO_PIN_7
+#define UART2_RX_PU_GPIO_Port GPIOC
 #define GP0_Pin GPIO_PIN_8
 #define GP0_GPIO_Port GPIOC
 #define GP1_Pin GPIO_PIN_9
